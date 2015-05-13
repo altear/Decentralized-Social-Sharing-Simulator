@@ -1,0 +1,6 @@
+;__includes ["external2.nls"]
+
+to test
+  show "hello world"
+  test2
+end

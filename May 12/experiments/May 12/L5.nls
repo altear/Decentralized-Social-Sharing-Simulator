@@ -1,0 +1,31 @@
+;TESTING: 
+;random vs popular top-k strategies, this time the top-k will exclude files that have already appeared in top-k. files have variable number of tags, decreasing top-k to document ratio. 
+;also introduced more peers in each profile (trying to even off the random factor a little)
+
+;EXPECTED: 
+;advantage to popular top-k should increase, the popular strategy should identify files with more tags - and the reduction of top-k to document ratio should make the strategy more pronounced
+
+;Results: Close in the beginning, but top-k popular peers pull ahead. This is expected, top-k popular functions better when the network is already established 
+;this situation mimics how some documents can appeal to more people due to their tags
+
+
+__includes [
+  "../../profiles/L5-profiles.nls"
+]
+
+to L5
+  let t-list n-values 3 [?]
+  let t-count 1
+  let k 10
+  
+  setup
+  
+  create-profiles1 40 [profiles-setup self k t-count t-list set color red]
+  create-profiles2 40 [profiles-setup self k t-count t-list set color cyan]
+  create-documents 200 [documents-setup self k (random 3) + 1 t-list set color grey]
+  
+  my-layout
+  
+  repeat 1000 [go]
+end
+

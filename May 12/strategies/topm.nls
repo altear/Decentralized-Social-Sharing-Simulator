@@ -1,0 +1,24 @@
+to-report topm-random [active-turtle m]
+  let topm [self] of turtles with [not document? and not (who = [who] of active-turtle)]
+    
+  report smart-sublist topm m
+end
+
+to-report topm-docShared [active-turtle m]
+  let docs [self] of link-neighbors
+  show docs
+  
+  let topm []
+  
+  foreach docs [
+    let interested-peers ([link-neighbors] of ?)
+    show word "interested: " interested-peers
+    foreach interested-peers [
+      set topm lput topm ?
+      show word "new topm: " topm 
+    ]
+  ]
+  
+  report topm
+end
+  

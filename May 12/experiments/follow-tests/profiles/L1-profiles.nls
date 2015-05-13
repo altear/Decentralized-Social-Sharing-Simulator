@@ -1,0 +1,28 @@
+;PROFILE 1 uses random top-m, follows everything
+
+breed [profiles1 profile1]
+directed-link-breed [follow-links follow-link]
+  
+profiles1-own [max-m]
+
+to profiles-setup [active-turtle m tag-count tag-list]
+  turtles-layout ;Standard layout
+  set score 0
+  set turns 0
+  set max-m m
+  set document? false
+  set active? true
+  set tags n-of tag-count tag-list
+end
+
+to profiles1-go [active-turtle]
+  ask active-turtle [
+    let topm (topm-random active-turtle max-m)
+    let follows (follow-everything active-turtle topm) 
+    
+    create-follow-links-to turtle-set follows
+  ]
+ 
+end
+
+

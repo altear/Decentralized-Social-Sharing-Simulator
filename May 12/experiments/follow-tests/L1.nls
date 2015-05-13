@@ -1,0 +1,11 @@
+to L1
+  let t-list n-values 2 [?]
+  let t-count 1
+  let m 5
+  
+  setup
+  
+  create-profiles1 20 [profiles-setup self m t-count t-list set color red]
+  
+  my-layout
+end
