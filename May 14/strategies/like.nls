@@ -1,0 +1,19 @@
+to-report like-everything [active-turtle topk]
+  report topk
+end
+
+to-report like-tag [topk]
+  let like-list []
+  
+  foreach topk [
+    let curr-turtle ?
+    foreach [tags] of self [
+      show self
+      if (member? ? [tags] of curr-turtle) [
+        set like-list lput curr-turtle like-list
+      ]
+    ] 
+  ]
+  
+  report like-list
+end

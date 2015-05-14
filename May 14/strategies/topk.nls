@@ -1,0 +1,19 @@
+; RANDOM
+
+to-report topk-random
+  let topk [self] of turtles with [document?]
+  report smart-sublist topk max-k
+end
+
+
+
+to-report topk-rememberRandom [active-turtle k memory-list]
+  let topk [self] of turtles with [document?]
+  foreach topk [if (member? ? link-neighbors or member? ? memory-list) [set topk remove ? topk]]
+  
+  if (length topk > k) [set topk sublist topk 0 k]
+  report topk
+end
+
+
+
