@@ -15,6 +15,7 @@ __includes [
   "profiles/like-follow-links.nls"
   
   "helper-functions.nls"
+  "test-code.nls"
 ]
 
 globals[
@@ -24,10 +25,12 @@ globals[
 ;; Assign each turtle a property
 turtles-own[
   document?                 ;;Is this agent a document or a peer?
-  tags                      ;;What tags do this document or peer have?
-  score                     ;;
-  turns                     ;;
-  active?                   ;;
+  active?                   ;;Is this agent currently active?
+  tags                      ;;The taste(s) of this agent
+  score                     ;;The score of this agent
+  turns                     ;;The number of times this agent has acted  
+  
+  pov-score                 ;;Other agents use this property when creating their own rankings
 ]
 
 ;; SETUP PROCEDURE: initialize variables and classes
@@ -54,10 +57,11 @@ end
 ;; GO PROCEDURE: This procedure is called once each 'tick', it is the top-level function for the running simulation
 to go
   ;;Select a random peer, and ask it to run its own "go" procedure
-  let active-turtle (one-of turtles with [not document? and active?])
-  run word [breed] of active-turtle "-go active-turtle"
+  ask (one-of turtles with [not document? and active?]) [
+    run word [breed] of self "-go self"
+    set turns turns + 1
+  ]
   
-  ask active-turtle [set turns turns + 1] 
   tick
 
 end

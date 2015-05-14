@@ -1,47 +1,11 @@
+; RANDOM
 
-to-report topk-popularity [active-turtle k]
-  ;; Sort documents by how many links they have
-  let topk reverse sort-on [count link-neighbors] turtles with [document?]
-  
-  if (length topk > k) [set topk sublist topk 0 k]
-  report topk
-end
-
-
-to-report topk-random [active-turtle k]
+to-report topk-random
   let topk [self] of turtles with [document?]
-  
-  if (length topk > k) [set topk sublist topk 0 k]
-  report topk
+  report smart-sublist topk max-k
 end
 
 
-to-report topk-newPopularity [active-turtle k]
-  let topk reverse sort-on [count link-neighbors] turtles with [document?]
-  foreach topk [if (member? ? link-neighbors) [set topk remove ? topk]]
-  
-  if (length topk > k) [set topk sublist topk 0 k]
-  report topk
-end
-
-
-to-report topk-newRandom [active-turtle k]
-  let topk [self] of turtles with [document?]
-  foreach topk [if (member? ? link-neighbors) [set topk remove ? topk]]
-  
-  if (length topk > k) [set topk sublist topk 0 k]
-  report topk
-end
-
-
-to-report topk-rememberPopularity [active-turtle k memory-list]
-  let topk reverse sort-on [count link-neighbors] turtles with [document?]
-  show link-neighbors
-  foreach topk [if (member? ? link-neighbors or member? ? memory-list) [set topk remove ? topk]]
-  
-  if (length topk > k) [set topk sublist topk 0 k]
-  report topk
-end
 
 to-report topk-rememberRandom [active-turtle k memory-list]
   let topk [self] of turtles with [document?]
@@ -51,20 +15,65 @@ to-report topk-rememberRandom [active-turtle k memory-list]
   report topk
 end
 
-to-report topk-peerSimilarity [active-turtle k]
-  let peers [self] of out-link-neighbors with [not document?]
+;PEER SIMILARITY
+to-report topk-peerSimilarity
+  let friends [self] of out-link-neighbors with [not document?]
   let topk []
+  let docs []
   
-  foreach peers [
-    let docs []
-    ask ? [set docs [self] of out-link-neighbors with [document?]]
-    
-    foreach docs [
-      if (not member? ? topk) [set topk lput ? topk]
+  ask turtles with [document?] [
+    set pov-score 0  
+    set docs lput self docs
+  ]
+  
+  ;for every friend
+  ask turtle-set friends [    
+    ;for every liked document
+    ask out-link-neighbors with [document?] [
+      ;add to list, or increase its score 
+      set docs lput self docs set pov-score 1
     ]
   ]
   
-  if length topk = 0 [set topk topk-random active-turtle k]
-    
-  report smart-sublist topk k
+  ;Destroy duplicates
+  foreach topk [if (member? ? out-link-neighbors or member? ? topk-memory) [set topk remove ? topk]]
+  
+  ;Sort docs by their pov-score
+  set topk reverse sort-on [pov-score] turtle-set docs
+  
+  report smart-sublist topk max-k
+end
+
+
+
+;PEER SIMILARITY - corrected
+to-report topk-peerSimilarity2
+  let friends [self] of out-link-neighbors with [not document?]
+  let topk []
+  let docs []
+  
+  ask turtles with [document?] [
+    set pov-score 0  
+    set docs lput self docs
+  ]
+  
+  ;for every friend
+  ask turtle-set friends [    
+    ;for every liked document
+    ask out-link-neighbors with [document?] [
+      ;add to list, or increase its score 
+      set docs lput self docs set pov-score 1
+    ]
+  ]
+  
+  show topk-memory
+  ;Destroy duplicates
+  foreach docs [
+    if (member? ? out-link-neighbors) or (member? ? topk-memory)[set docs remove ? docs]
+  ]
+
+  ;Sort docs by their pov-score
+  set topk reverse sort-on [pov-score] turtle-set docs
+  
+  report smart-sublist topk max-k
 end
