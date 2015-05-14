@@ -8,8 +8,8 @@ __includes [
   "strategies/leave.nls"
   "strategies/score.nls"
   
-  "experiments/L1.nls"
-  "experiments/profiles/L1-profiles.nls"
+  "experiments/L2.nls"
+  "experiments/profiles/L2-profiles.nls"
   
   "profiles/documents.nls"
   "profiles/like-follow-links.nls"
@@ -56,6 +56,7 @@ end
 to go
   ;;Select a random peer, and ask it to run its own "go" procedure
   ask (one-of turtles with [not document? and active?]) [
+    highlight-peer
     run word [breed] of self "-go"
     set turns turns + 1
   ]
@@ -76,9 +77,10 @@ to my-layout
   display
 end
 
-to-report breed-list [this-breed]
-  report turtles with [breed = this-breed]
-end 
+to highlight-peer
+  ask other turtles [set size 1]      ;;reset the original sizes and colors
+  set size 2.5
+end
 @#$#@#$#@
 GRAPHICS-WINDOW
 227

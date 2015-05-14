@@ -18,6 +18,9 @@ to L3
   repeat 300 [go]
 end
 
+
+
+
 to S1
   let t-list n-values 20 [?]
   let t-count 10

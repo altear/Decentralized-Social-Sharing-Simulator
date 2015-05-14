@@ -18,7 +18,7 @@ to L1
   
   create-profiles1 10 [profiles-setup k m t-count t-list set color red]
  
-  create-documents 20 [documents-setup self k t-count t-list set color grey]
+  create-documents 20 [documents-setup t-count t-list set color grey]
   
   
 

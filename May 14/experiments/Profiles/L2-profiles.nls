@@ -34,6 +34,7 @@ to profiles1-go
   let topm topm-random
   let likes like-tag topk
   let follows follow-everything topm
+  let publish publish-random
   
   ;Add timestamp to existing memory links
   ask my-out-memory-links with [member? end2 (sentence topk topm)][
@@ -46,35 +47,14 @@ to profiles1-go
      set color pink
   ]
   
-  ;Add timestamp to existing memory links
+  ;Add timestamp to existing connecting links
   ask my-out-connect-links with [member? end2 (sentence likes follows)][
      set timestamp lput ticks timestamp 
   ]
   
-  ;Create memory-links to new topk and topm results
+  ;Create memory-links to new like and follow results
   create-connect-links-to (turtle-set (sentence likes follows)) with [not in-connect-link-neighbor? myself][
      set timestamp (list ticks)
-     set color cyan
+     set color orange
   ]
 end
-
-;to profiles1-go [active-turtle]
-;  ask active-turtle [
-;    let topk topk-rememberRandom active-turtle ([max-k] of active-turtle) topk-memory
-;    foreach topk [if not member? ? topk-memory [set topk-memory lput ? topk-memory]]
-;    let like-list (like-tag active-turtle topk)
-;    set score score + score-new active-turtle topk like-list
-;    create-links-with turtle-set like-list
-;  ]
-;end
-;
-;to profiles2-go [active-turtle]
-;  ask active-turtle [
-;    let topk topk-random 
-;    foreach topk [if not member? ? topk-memory [set topk-memory lput ? topk-memory]]
-;    let like-list (like-tag active-turtle topk)
-;    set score score + score-new active-turtle topk like-list
-;    create-links-with turtle-set like-list
-;  ]
-;end
-

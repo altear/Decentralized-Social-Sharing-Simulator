@@ -8,13 +8,18 @@ to-report score-sum [active-turtle topk like-list]
 end
 
 ;; NEW - Score is based off how many new documents a peer will like (if it already likes one, it will not count). +1 if they like a new document
-to-report score-new [active-turtle topk like-list]
+to-report score-new [like-list published]
   let temp-score 0
   foreach like-list [
     if (not link-neighbor? ?) [set temp-score temp-score + 1] 
   ]
   
+  foreach published [
+     set temp-score temp-score - 2
+  ]
   report temp-score
 end
+
+
 
 
