@@ -1,8 +1,4 @@
-to-report like-everything [active-turtle topk]
-  report topk
-end
-
-to-report like-tag [topk]
+to-report like-tags-in-topk [topk]
   let like-list []
   
   foreach topk [
@@ -15,5 +11,7 @@ to-report like-tag [topk]
     ] 
   ]
   
+  draw-connections like-list
   report like-list
 end
+

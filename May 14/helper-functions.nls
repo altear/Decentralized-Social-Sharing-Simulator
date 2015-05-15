@@ -4,5 +4,14 @@ to-report smart-sublist [ls len]
   report ls
 end
 
+;Draws the like/follow connections
+to draw-connections [new-connections]
+  ;Create connect-links to new like and follow results
+  create-connect-links-to (turtle-set new-connections) with [not in-connect-link-neighbor? myself][
+     set timestamp (list ticks)
+     set color orange
+  ]
+end
+
 
 

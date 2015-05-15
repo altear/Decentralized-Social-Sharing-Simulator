@@ -1,3 +1,4 @@
-to-report follow-everything [topm]
+to-report follow-everyone [topm]
+  draw-connections topm
   report topm
 end

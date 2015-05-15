@@ -1,12 +1,14 @@
 ;; Load External Files
 __includes [
-  "strategies/topk.nls"
-  "strategies/topm.nls"
+  "strategies/rank.nls"
+  "strategies/payoff.nls"
   "strategies/like.nls"
+  
+  "strategies/candidates.nls"
   "strategies/follow.nls"
   "strategies/publish.nls"
   "strategies/leave.nls"
-  "strategies/score.nls"
+  
   
   "experiments/L2.nls"
   "experiments/profiles/L2-profiles.nls"
@@ -62,7 +64,6 @@ to go
   ]
   
   tick
-
 end
 
 
