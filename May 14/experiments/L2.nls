@@ -8,6 +8,10 @@ __includes [
   
 ]
 
+;memory-links [set hidden? true]
+;ask connect-links [set hidden? true]
+;ask turtle 8 [ ask my-out-connect-links [set hidden? false]]
+
 to L1
   let t-list n-values 2 [?]
   let t-count 1
@@ -19,10 +23,6 @@ to L1
   create-profiles1 10 [profiles-setup k m t-count t-list set color red]
  
   create-documents 20 [documents-setup t-count t-list set color grey]
-  
-  
-
-  
   my-layout
 end
 

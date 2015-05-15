@@ -1,17 +1,15 @@
-to-report like-tags-in-topk [topk]
+to-report like-tags-in-topk
   let like-list []
   
-  foreach topk [
+  foreach turn-ranked [
     let curr-turtle ?
     foreach [tags] of self [
-      show self
       if (member? ? [tags] of curr-turtle) [
         set like-list lput curr-turtle like-list
       ]
     ] 
   ]
   
-  draw-connections like-list
   report like-list
 end
 

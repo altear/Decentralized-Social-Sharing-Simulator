@@ -13,5 +13,19 @@ to draw-connections [new-connections]
   ]
 end
 
+to draw-memories [new-memories]
+  
+  ;Create memory-links to new topk and topm results
+  create-memory-links-to (turtle-set new-memories) with [not in-memory-link-neighbor? myself][
+     set timestamp (list ticks)
+     set color pink
+  ]
+  
+  ;Add timestamp to existing connecting links
+  ask my-out-connect-links with [member? end2 new-memories][
+     set timestamp lput ticks timestamp 
+  ]
+end
+
 
 
