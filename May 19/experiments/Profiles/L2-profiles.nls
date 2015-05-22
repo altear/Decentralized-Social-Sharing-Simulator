@@ -6,17 +6,9 @@ breed [profiles1 profile1]
 breed [profiles2 profile2]
 breed [profiles3 profile3]
 
-directed-link-breed [connect-links connect-link] ;Like and follow are basically the same thing, one is when it connects a user to documents, the other is when it connect them to peers
-directed-link-breed [memory-links memory-link]   ;Used to remember when something last turned up in topk/topm
-directed-link-breed [rank-links rank-link]       ;Used to create temporary perspective based ranks
-
 profiles1-own [max-k max-m]
 profiles2-own [max-k max-m]
 profiles3-own [max-k max-m]
-
-connect-links-own [timestamp]
-memory-links-own [timestamp]
-rank-links-own [weight]
 
 to profiles-setup [k m tag-count tag-list]
   turtles-layout ;Standard layout
@@ -30,6 +22,7 @@ to profiles-setup [k m tag-count tag-list]
 end
 
 ;PROFILE 1
+;Standard profile using random metric
 to-report profiles1-rank
   let rank-list topk-random
   let remembered-turtles ([end2] of my-out-memory-links)

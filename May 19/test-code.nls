@@ -106,3 +106,29 @@ to test-list
   ]
 end
 
+;Test export abillity
+to test-export
+  let a n-values 9 [? * ?]
+  show a
+  
+  let labname "l2"
+  set-current-directory (word "C:/Netlogo/Experiment-Data/" labname)
+  
+  let i 0
+  let file  (word "Simulation-" i ".txt")
+  while [file-exists? file] [
+    set i i + 1
+    set file (word "Simulation-" i ".txt")
+  ]
+  
+  file-open file
+  file-print "HELLO WORLD"
+  file-flush
+  file-close
+  
+  file-open file
+  show ""
+  show file-read-line
+  file-close
+end
+

@@ -9,9 +9,13 @@ __includes [
   "strategies/publish.nls"
   "strategies/leave.nls"
   
-  
-  "experiments/L2.nls"
-  "experiments/profiles/L2-profiles.nls"
+  "experiments/L2/Instructions-early.nls"
+  "experiments/L2/Profile1.nls"
+  "experiments/L2/Profile2.nls"
+  "experiments/L2/Profile3.nls"
+  "experiments/L2/Profile4.nls"
+  "experiments/L2/Profile5.nls"
+  "experiments/L2/Profile6.nls"
   
   "profiles/documents.nls"
   "profiles/like-follow-links.nls"
@@ -31,6 +35,8 @@ turtles-own[
   tags                      ;;The taste(s) of this agent
   score                     ;;The score of this agent
   turns                     ;;The number of times this agent has acted  
+  max-k                     ;;The size of the top-k 
+  max-m                     ;;The size of the top-m (aka candidates list for who to follow)
   
   turn-ranked
   turn-payoff
