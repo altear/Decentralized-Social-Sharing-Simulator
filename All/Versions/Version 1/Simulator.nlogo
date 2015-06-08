@@ -1,32 +1,14 @@
 ;; Load External Files
 __includes [
-  "strategies/rank.nls"
-  "strategies/payoff.nls"
-  "strategies/like.nls"
-  
-  "strategies/candidates.nls"
-  "strategies/follow.nls"
-  "strategies/publish.nls"
-  "strategies/leave.nls"
-  
-  "experiments/L2/Instructions-early.nls"
-  "experiments/L2/Profile1.nls"
-  "experiments/L2/Profile2.nls"
-  "experiments/L2/Profile3.nls"
-  "experiments/L2/Profile4.nls"
-  "experiments/L2/Profile5.nls"
-  "experiments/L2/Profile6.nls"
-  
-  "profiles/documents.nls"
-  "profiles/like-follow-links.nls"
-  
   "helper-functions.nls"
   "test-code.nls"
+  "global-profiles.nls"
   
+  "../../Experiments/Negative-Payoff/Lab2-Random-Vs-Popular-with-isolated-tastes.nls"
 ]
 
 globals[
-  file
+  
 ]
 
 ;; Assign each turtle a property
@@ -49,7 +31,7 @@ turtles-own[
 ]
 
 ;; SETUP PROCEDURE: initialize variables and classes
-to setup 
+to simulator-setup 
   ;;Clear the values from the last simulation
   clear-all
   reset-ticks
@@ -59,7 +41,6 @@ to setup
   
   set-default-shape turtles "circle"
   ask links [set thickness 1]
-  new-data-file
 end
 
 
@@ -88,42 +69,13 @@ to go
     
     run (word "set turn-leave? " [breed] of self "-leave?")
     
-    store-results
     set turns turns + 1
     set score score + turn-payoff
+    
+    store-results
   ]
   
   tick
-end
-
-to new-data-file
-  let labname "l3"
-  set-current-directory (word "C:/Netlogo/Experiment-Data/" labname)
-  
-  let i 0
-  set file  (word "Simulation-" i ".csv")
-  while [file-exists? file] [
-    set i i + 1
-    set file (word "Simulation-" i ".csv")
-  ]
-  
-  
-  set file "test1.csv"
-  
-  if behaviorspace-run-number = 1 [
-    file-open file
-    file-print "ticks, payoff this turn, turn number, behaviorspace-run-number" 
-    file-flush
-    file-close
-  ]
-end
-
-to store-results 
-;Test export abillity
-  file-open file
-  file-print (word ticks "," turn-payoff "," turns "," behaviorspace-run-number) 
-  file-flush
-  file-close
 end
 
 to my-layout
@@ -141,8 +93,6 @@ to highlight-peer
   ask other turtles [set size 1]      ;;reset the original sizes and colors
   set size 2.5
 end
-
-
 @#$#@#$#@
 GRAPHICS-WINDOW
 227
@@ -265,8 +215,6 @@ PENS
 "profile-2" 1.0 0 -11221820 true "" "carefully [\nifelse (ticks > 0) [plot mean [score] of turtles with [not document? and active? and breed = profiles2]]\n[plot 0]]\n[plot 0]"
 "profile-3" 1.0 0 -10899396 true "" "carefully [\nifelse (ticks > 0) [plot mean [score] of turtles with [not document? and active? and breed = profiles3]]\n[plot 0]]\n[plot 0]"
 "profile-4" 1.0 0 -1184463 true "" "carefully [\nifelse (ticks > 0) [plot mean [score] of turtles with [not document? and active? and breed = profiles4]]\n[plot 0]]\n[plot 0]"
-"pen-5" 1.0 0 -5204280 true "" "carefully [\nifelse (ticks > 0) [plot mean [score] of turtles with [not document? and active? and breed = profiles5]]\n[plot 0]]\n[plot 0]"
-"pen-6" 1.0 0 -465430 true "" "carefully [\nifelse (ticks > 0) [plot mean [score] of turtles with [not document? and active? and breed = profiles6]]\n[plot 0]]\n[plot 0]"
 
 PLOT
 702
@@ -758,17 +706,6 @@ create-profiles5 1 [profiles-setup 5 2 1 [0 1] cyan]</setup>
     </enumeratedValueSet>
     <enumeratedValueSet variable="random-seed?">
       <value value="false"/>
-    </enumeratedValueSet>
-  </experiment>
-  <experiment name="test" repetitions="100" runMetricsEveryStep="true">
-    <setup>general-network-1</setup>
-    <go>go</go>
-    <timeLimit steps="10"/>
-    <enumeratedValueSet variable="random-seed?">
-      <value value="false"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="the-random-seed">
-      <value value="50"/>
     </enumeratedValueSet>
   </experiment>
 </experiments>

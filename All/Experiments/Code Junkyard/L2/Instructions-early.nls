@@ -33,19 +33,11 @@ to General-Network-1
   let m 3
   
   
-  create-documents 250 [documents-setup t-count [1] set color grey]
-  create-documents 250 [documents-setup t-count [0] set color grey]
+  create-documents 25 [documents-setup t-count [1] set color grey]
+  create-documents 25 [documents-setup t-count [0] set color grey]
   create-profiles1 10 [profiles-setup k m t-count [1] red]
   create-profiles1 10 [profiles-setup k m t-count [0] red]
   
-  create-profiles4 10 [profiles-setup k m t-count [1] cyan]
-  create-profiles4 10 [profiles-setup k m t-count [0] cyan]
-  
-  create-profiles5 10 [profiles-setup k m t-count [1] yellow]
-  create-profiles5 10 [profiles-setup k m t-count [0] yellow]
-  
-  create-profiles6 10 [profiles-setup k m t-count [1] yellow]
-  create-profiles6 10 [profiles-setup k m t-count [0] yellow]
   my-layout  
 end
 

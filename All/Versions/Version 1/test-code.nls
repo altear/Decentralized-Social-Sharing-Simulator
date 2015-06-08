@@ -115,18 +115,18 @@ to test-export
   set-current-directory (word "C:/Netlogo/Experiment-Data/" labname)
   
   let i 0
-  let file1  (word "Simulation-" i ".txt")
-  while [file-exists? file1] [
+  let test-file  (word "Simulation-" i ".txt")
+  while [file-exists? test-file] [
     set i i + 1
-    set file1 (word "Simulation-" i ".txt")
+    set test-file (word "Simulation-" i ".txt")
   ]
   
-  file-open file1
+  file-open test-file
   file-print "HELLO WORLD"
   file-flush
   file-close
   
-  file-open file1
+  file-open test-file
   show ""
   show file-read-line
   file-close
