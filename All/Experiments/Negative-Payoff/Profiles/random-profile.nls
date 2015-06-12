@@ -21,7 +21,7 @@ to-report random-profiles-like
 end
 
 to-report random-profiles-follow
-  let candidates topm-from-liked
+  let candidates topm-from-liked-in-topk
   let remembered-turtles ([end2] of my-out-memory-links)
   set candidates filter [not member? ? remembered-turtles] candidates
   set candidates smart-sublist candidates max-m
@@ -34,7 +34,7 @@ to-report random-profiles-follow
 end
 
 to-report random-profiles-publish
-  report nobody
+  report publish-with-threshold-and-cost
 end
 
 to-report random-profiles-leave? 

@@ -60,3 +60,28 @@ to-report topm-from-liked
 
   report topk
 end
+
+to-report topm-from-liked-in-topk
+  update-rank-links
+  let active-turtle self
+  let liked-docs filter [[document?] of ?] [end2] of my-out-connect-links
+  set liked-docs filter [member? ? turn-ranked] liked-docs 
+  
+  ;Ask each of the top-k documents
+  ask turtle-set liked-docs [
+    ;Who liked you? (other than myself)
+    foreach filter [[who] of ? != [who] of active-turtle] ([end1] of my-in-connect-links) [
+      ;Lets rank them higher
+      ask rank-link ([who] of myself) ([who] of ?) [
+        set weight weight + 1  
+      ]
+    ]
+  ]
+  
+  
+  let topk reverse filter [[weight] of ? > 0] sort-on [weight] my-out-rank-links with [[document?] of end2 = false]
+  ;show map [[weight] of ?] topk
+  set topk map [[end2] of ?] topk
+
+  report topk
+end

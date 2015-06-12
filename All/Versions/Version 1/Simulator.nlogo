@@ -4,11 +4,24 @@ __includes [
   "test-code.nls"
   "global-profiles.nls"
   
-  "../../Experiments/Negative-Payoff/Lab2-Random-Vs-Popular-with-isolated-tastes.nls"
+  "Negative-Payoff/Lab2-Random-Vs-Popular-with-isolated-tastes.nls"
+
+  "Negative-Payoff/profiles/random-profile.nls"
+  "Negative-Payoff/profiles/popular-profile.nls"
+  "Negative-Payoff/profiles/attack-profile.nls"
+  
+  "Negative-Payoff/strategies/candidates.nls"
+  "Negative-Payoff/strategies/follow.nls"
+  "Negative-Payoff/strategies/leave.nls"
+  "Negative-Payoff/strategies/like.nls"
+  "Negative-Payoff/strategies/payoff.nls"
+  "Negative-Payoff/strategies/publish.nls"
+  "Negative-Payoff/strategies/rank.nls"
+
 ]
 
 globals[
-  
+  user
 ]
 
 ;; Assign each turtle a property
@@ -20,6 +33,8 @@ turtles-own[
   turns                     ;;The number of times this agent has acted  
   max-k                     ;;The size of the top-k 
   max-m                     ;;The size of the top-m (aka candidates list for who to follow)
+  last-turn                 ;;The last turn this peer was the user
+  children                  ;;Get the children of this file
   
   turn-ranked
   turn-payoff
@@ -39,6 +54,7 @@ to simulator-setup
   ;;Set the random seed if a value for it was provided
   ifelse (random-seed?) [random-seed the-random-seed] [random-seed new-seed]
   
+  set user nobody
   set-default-shape turtles "circle"
   ask links [set thickness 1]
 end
@@ -53,8 +69,11 @@ end
 
 ;; GO PROCEDURE: This procedure is called once each 'tick', it is the top-level function for the running simulation
 to go
+
   ;;Select a random peer, and ask it to run its own "go" procedure
   ask (one-of turtles with [not document? and active?]) [
+    set user self
+    
     highlight-peer
     
     run (word "set turn-ranked " [breed] of self "-rank")
@@ -71,8 +90,8 @@ to go
     
     set turns turns + 1
     set score score + turn-payoff
-    
-    store-results
+    set last-turn ticks
+    set children (sentence turn-published children)
   ]
   
   tick
@@ -701,6 +720,55 @@ create-profiles5 1 [profiles-setup 5 2 1 [0 1] cyan]</setup>
     <go>go</go>
     <timeLimit steps="10"/>
     <metric>sum [score] of profiles5</metric>
+    <enumeratedValueSet variable="the-random-seed">
+      <value value="50"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="random-seed?">
+      <value value="false"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="experiment" repetitions="1000" runMetricsEveryStep="true">
+    <setup>setup
+go</setup>
+    <go>go</go>
+    <timeLimit steps="40"/>
+    <metric>[breed] of user</metric>
+    <metric>[turns] of user</metric>
+    <metric>[turn-payoff] of user</metric>
+    <metric>[score] of user</metric>
+    <enumeratedValueSet variable="the-random-seed">
+      <value value="50"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="random-seed?">
+      <value value="false"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="experiment-larger-network" repetitions="1000" runMetricsEveryStep="true">
+    <setup>setup
+go</setup>
+    <go>go</go>
+    <timeLimit steps="40"/>
+    <metric>[breed] of user</metric>
+    <metric>[turns] of user</metric>
+    <metric>[turn-payoff] of user</metric>
+    <metric>[score] of user</metric>
+    <enumeratedValueSet variable="the-random-seed">
+      <value value="50"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="random-seed?">
+      <value value="false"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="smaller-netowork-1" repetitions="100" runMetricsEveryStep="true">
+    <setup>setup
+go</setup>
+    <go>go</go>
+    <timeLimit steps="1000"/>
+    <metric>[breed] of user</metric>
+    <metric>[turns] of user</metric>
+    <metric>[turn-payoff] of user</metric>
+    <metric>[score] of user</metric>
+    <metric>length [children] of user</metric>
     <enumeratedValueSet variable="the-random-seed">
       <value value="50"/>
     </enumeratedValueSet>

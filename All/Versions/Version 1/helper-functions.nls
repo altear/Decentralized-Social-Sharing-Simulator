@@ -12,6 +12,7 @@ to profiles-setup [k m tag-count tag-list colour]
   set active? true
   set tags n-of tag-count tag-list
   set color colour
+  set children []
 end
 
 to documents-setup [tag-count tag-list]
@@ -32,7 +33,12 @@ to-report smart-sublist [ls len]
   report ls
 end
 
-
+to-report shared-member [list1 list2]
+  if length filter [member? ? list1] list2 > 0 [
+    report true
+  ]
+  report false
+end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; LINK RELATED FUNCTIONS ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -41,7 +47,7 @@ end
 to draw-connections [new-connections]
   ;Create connect-links to new like and follow results
   create-connect-links-to (turtle-set new-connections) with [not in-connect-link-neighbor? myself][
-     set timestamp (list ticks)
+     set timestamps (list ticks)
      set color orange
   ]
 end
@@ -49,14 +55,15 @@ end
 to draw-memories [new-memories]
   ;Create memory-links to new topk and topm results
   create-memory-links-to (turtle-set new-memories) with [not in-memory-link-neighbor? myself][
-     set timestamp (list ticks)
+     set timestamps (list ticks)
      set color pink
-     set hidden? true
+     set hidden? false
+     
   ]
   
   ;Add timestamp to existing connecting links
-  ask my-out-connect-links with [member? end2 new-memories][
-     set timestamp lput ticks timestamp
+  ask my-out-memory-links with [member? end2 new-memories][
+     set timestamps lput ticks timestamps
   ]
 end
 

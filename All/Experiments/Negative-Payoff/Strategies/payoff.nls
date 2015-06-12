@@ -10,7 +10,7 @@ end
 ;; NEW - Score is based off how many new documents a peer will like (if it already likes one, it will not count). +1 if they like a new document
 to-report score-new 
   let temp-score 0
-  let remembered-turtles map [[end2] of ?] ([self] of my-out-memory-links with [last timestamp < ticks])
+  let remembered-turtles map [[end2] of ?] ([self] of my-out-memory-links with [last timestamps < ticks])
   let remembered-documents (turtle-set remembered-turtles) with [document?]  
   
   foreach turn-ranked [
@@ -27,7 +27,7 @@ end
 ;; NEW WITH PENALTY
 to-report score-new-with-penalty 
   let temp-score 0
-  let remembered-turtles map [[end2] of ?] ([self] of my-out-memory-links with [last timestamp < ticks])
+  let remembered-turtles map [[end2] of ?] ([self] of my-out-memory-links with [last timestamps < ticks])
   let remembered-documents (turtle-set remembered-turtles) with [document?]  
   
   foreach turn-ranked [
@@ -41,5 +41,21 @@ to-report score-new-with-penalty
   report temp-score
 end
 
+;; Attacker stock
+to-report score-attacker-stock
+  let document-list [self] of turtles with [document?] 
+  let shared-tags-documents filter [shared-member ([tags] of ?) ([tags] of user)] document-list 
+  let temp-score 0  let score-per-rank-constant .1  
+  ask turtle-set shared-tags-documents [
+    ask my-in-memory-links [
 
+       ;find all the times the file has been in someones topk since last turn
+       set temp-score temp-score + score-per-rank-constant * length filter [? > [last-turn] of user] timestamps
+
+
+     ] 
+  ]
+  
+  report temp-score
+end
 

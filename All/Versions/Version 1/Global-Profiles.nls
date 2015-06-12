@@ -13,6 +13,6 @@ directed-link-breed [connect-links connect-link] ;Like and follow are basically 
 directed-link-breed [memory-links memory-link]   ;Used to remember when something last turned up in topk/topm
 directed-link-breed [rank-links rank-link]       ;Used to create temporary perspective based ranks
 
-connect-links-own [timestamp]
-memory-links-own [timestamp]
+connect-links-own [timestamps]
+memory-links-own [timestamps]
 rank-links-own [weight]

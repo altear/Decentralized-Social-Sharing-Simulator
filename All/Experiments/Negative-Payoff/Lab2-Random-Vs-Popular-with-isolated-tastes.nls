@@ -1,17 +1,6 @@
 ;;SIMULATOR: VERSION 1
 
-__includes [
-	"profiles/random-profile.nls"
-  "profiles/popular-profile.nls"
-	
-  "strategies/candidates.nls"
-	"strategies/follow.nls"
-	"strategies/leave.nls"
-	"strategies/like.nls"
-	"strategies/payoff.nls"
-	"strategies/publish.nls"
-	"strategies/rank.nls"
-]
+
 
 globals [
   output-file1
@@ -29,7 +18,7 @@ to setup
 	create-documents 25 [documents-setup t-count [0]]
 	
   create-random-profiles 2 [profiles-setup k m t-count [1] red]
-  create-popular-profiles 2 [profiles-setup k m t-count [1] blue]
+  create-attack-profiles 2 [profiles-setup k m t-count [0] green]
 
 
 	my-layout  

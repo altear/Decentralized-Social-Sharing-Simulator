@@ -132,3 +132,12 @@ to test-export
   file-close
 end
 
+;test list overlap
+to test-overlap
+ show shared-member [0 1] [1 2]
+ show shared-member [0 1] [2 3]  
+ 
+ show length filter [member? ? [1 6 7]] [1 2 4 5]
+ 
+ show filter [? > 15] [12 14 15 16]  
+end

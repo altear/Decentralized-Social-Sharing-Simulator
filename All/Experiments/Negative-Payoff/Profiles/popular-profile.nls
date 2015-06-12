@@ -21,7 +21,7 @@ to-report popular-profiles-like
 end
 
 to-report popular-profiles-follow
-  let candidates topm-from-liked
+  let candidates topm-from-liked-in-topk
   let remembered-turtles ([end2] of my-out-memory-links)
   set candidates filter [not member? ? remembered-turtles] candidates
   set candidates smart-sublist candidates max-m
@@ -40,3 +40,4 @@ end
 to-report popular-profiles-leave? 
   report 0
 end
+
