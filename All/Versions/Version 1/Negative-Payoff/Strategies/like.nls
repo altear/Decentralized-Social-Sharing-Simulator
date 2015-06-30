@@ -1,15 +1,4 @@
 to-report like-tags-in-topk
-  let like-list []
-  
-  foreach turn-ranked [
-    let curr-turtle ?
-    foreach [tags] of self [
-      if (member? ? [tags] of curr-turtle) [
-        set like-list lput curr-turtle like-list
-      ]
-    ] 
-  ]
-  
-  report like-list
+  report filter [shared-member ([tags] of ?) ([tags] of user)] turn-ranked
 end
 

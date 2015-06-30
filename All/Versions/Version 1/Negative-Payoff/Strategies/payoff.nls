@@ -27,16 +27,31 @@ end
 ;; NEW WITH PENALTY
 to-report score-new-with-penalty [reward punishment]
   let temp-score 0
-  let remembered-turtles map [[end2] of ?] ([self] of my-out-memory-links with [last timestamps < ticks])
+  let remembered-turtles map [[end2] of ?] ([self] of my-out-memory-links with [last timestamps < ticks]) ;links created before this turn
   let remembered-documents (turtle-set remembered-turtles) with [document?]  
   
   
   foreach turn-ranked [
-    ifelse (not member? ? remembered-documents) (shared-member ([tags] of ?) ([tags] of user))
+    ifelse (not member? ? remembered-documents) and (shared-member ([tags] of ?) ([tags] of user))
       [set temp-score temp-score + reward]
       [set temp-score temp-score - punishment]
       
-    ] 
+
+  ]
+  
+  report temp-score
+end
+
+;; NEW WITH PENALTY AND TURN COST
+to-report score-new-with-penalty-turncost [reward punishment turncost]
+  let temp-score turncost
+  let remembered-turtles map [[end2] of ?] ([self] of my-out-memory-links with [first timestamps < ticks]) ;links created before this turn
+  let remembered-documents (turtle-set remembered-turtles) with [document?]  
+  
+  foreach turn-ranked [
+    ifelse (not member? ? remembered-documents) and (shared-member ([tags] of ?) ([tags] of user))
+      [set temp-score temp-score + reward]
+      [set temp-score temp-score - punishment]
   ]
   
   report temp-score
@@ -76,6 +91,23 @@ to-report score-attacker-with-turn-cost [reward turncost]
        set temp-score temp-score + reward * length filter [? > [last-turn] of user] timestamps
 
 
+     ] 
+  ]
+  
+  report temp-score
+end
+
+;; Attacker stock
+to-report score-viral-attacker-with-turn-cost [reward turncost]
+  let document-list [self] of turtles with [document?] 
+  let shared-tags-documents filter [shared-member ([tags] of ?) ([tags] of user)] document-list 
+  let temp-score turncost
+  
+  
+  ask turtle-set shared-tags-documents [
+    ask my-in-memory-links [
+       ;find all the times the file has been in someones topk since last turn 
+       if first timestamps > [last-turn] of user [set temp-score temp-score + reward]
      ] 
   ]
   

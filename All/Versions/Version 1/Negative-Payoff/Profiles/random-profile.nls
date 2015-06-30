@@ -12,7 +12,7 @@ end
 
 to-report random-profiles-payoff 
   let reward 1.5
-  let punishment 0.5
+  let punishment 4
   report score-new-with-penalty reward punishment
 end
 
@@ -45,5 +45,6 @@ to-report random-profiles-publish
 end
 
 to-report random-profiles-leave? 
-  report 0
+  leave-join-network
+  report active?
 end

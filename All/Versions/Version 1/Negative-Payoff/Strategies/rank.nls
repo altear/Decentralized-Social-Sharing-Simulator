@@ -19,7 +19,7 @@ end
 to-report topk-doc-popularity
   update-rank-links
   
-  ask my-out-rank-links with [[document?] of end2 = true] [
+  ask my-out-rank-links with [[document?] of end2 = true][
     let popularity 0
     ask end2 [
       set popularity count my-in-connect-links
@@ -174,4 +174,34 @@ to-report follow-similarity
   report topk
 end
 
+
+;MEMORY STRATEGIES
+to-report topk-random-with-memory
+  update-rank-links
+  let remembered-turtles map [[end2] of ?] ([self] of my-out-memory-links with [last timestamps < ticks]) ;links created before this turn
+  let remembered-documents (turtle-set remembered-turtles) with [document?]  
+  
+  let topk [self] of turtles with [document? and not member? self remembered-documents]
+  report topk
+end
+
+to-report topk-doc-popularity-with-memory
+  update-rank-links
+  
+  let remembered-turtles map [[end2] of ?] ([self] of my-out-memory-links with [last timestamps < ticks]) ;links created before this turn
+  let remembered-documents (turtle-set remembered-turtles) with [document?]  
+  
+  ask my-out-rank-links with [[document?] of end2 = true and not member? end2 remembered-documents][
+    let popularity 0
+    ask end2 [
+      set popularity count my-in-connect-links
+    ]
+    set weight popularity
+  ]
+  
+  let topk reverse sort-on [weight] my-out-rank-links with [[document?] of end2 = true]
+  set topk map [[end2] of ?] topk
+
+  report topk
+end
 

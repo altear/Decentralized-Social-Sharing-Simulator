@@ -12,6 +12,22 @@ to-report publish-random
   report published
 end
 
+to-report publish-with-cost [cost]
+  let published []
+    
+  set turn-payoff turn-payoff - cost
+  
+  hatch-documents 1 [
+    documents-setup 1 tags set color grey
+    set xcor max-pxcor - 2 * random max-pxcor 
+    set ycor max-pycor - 2 * random max-pycor 
+
+    set published lput self published  
+  ] 
+
+  report published
+end
+
 to-report publish-with-threshold-and-cost [threshold cost]
   let published []
   

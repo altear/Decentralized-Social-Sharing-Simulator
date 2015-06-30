@@ -5,10 +5,10 @@ __includes [
   "global-profiles.nls"
   
   "Negative-Payoff/Lab2-Random-Vs-Popular-with-isolated-tastes.nls"
+  
 
-  "Negative-Payoff/profiles/random-profile.nls"
-  "Negative-Payoff/profiles/popular-profile.nls"
-  "Negative-Payoff/profiles/attack-profile.nls"
+  "Negative-Payoff/profiles/stock-document-popularity-profile.nls"
+  "Negative-Payoff/profiles/stock-viral-profile.nls"
   
   "Negative-Payoff/strategies/candidates.nls"
   "Negative-Payoff/strategies/follow.nls"
@@ -22,6 +22,7 @@ __includes [
 
 globals[
   user
+  inactive-color
 ]
 
 ;; Assign each turtle a property
@@ -35,6 +36,9 @@ turtles-own[
   max-m                     ;;The size of the top-m (aka candidates list for who to follow)
   last-turn                 ;;The last turn this peer was the user
   children                  ;;Get the children of this file
+  
+  turn-payoff-list          ;;List of all turn scores
+  default-color             ;;default color when a peer is active
   
   turn-ranked
   turn-payoff
@@ -55,6 +59,7 @@ to simulator-setup
   ifelse (random-seed?) [random-seed the-random-seed] [random-seed new-seed]
   
   set user nobody
+  set inactive-color black
   set-default-shape turtles "circle"
   ask links [set thickness 1]
 end
@@ -71,30 +76,38 @@ end
 to go
 
   ;;Select a random peer, and ask it to run its own "go" procedure
-  ask (one-of turtles with [not document? and active?]) [
-    set user self
+  ask (one-of turtles with [not document?]) [
     
-    highlight-peer
+    if [active?] of self [ 
+      set user self
+      
+      highlight-peer
+      
+      run (word "set turn-ranked " [breed] of self "-rank")
+      
+      run (word "set turn-payoff " [breed] of self "-payoff")
+      
+      run (word "set turn-liked " [breed] of self "-like")
+      
+      run (word "set turn-followed " [breed] of self "-follow")
+      
+      run (word "set turn-published " [breed] of self "-publish")
+    ]
     
-    run (word "set turn-ranked " [breed] of self "-rank")
+     run (word "set turn-leave? " [breed] of self "-leave?")
     
-    run (word "set turn-payoff " [breed] of self "-payoff")
-    
-    run (word "set turn-liked " [breed] of self "-like")
-    
-    run (word "set turn-followed " [breed] of self "-follow")
-    
-    run (word "set turn-published " [breed] of self "-publish")
-    
-    run (word "set turn-leave? " [breed] of self "-leave?")
-    
-    set turns turns + 1
-    set score score + turn-payoff
-    set last-turn ticks
-    set children (sentence turn-published children)
+    update-variables
   ]
   
   tick
+end
+
+to update-variables
+  set turns turns + 1
+  set score score + turn-payoff
+  set turn-payoff-list lput turn-payoff turn-payoff-list
+  set last-turn ticks
+  set children (sentence turn-published children)
 end
 
 to my-layout

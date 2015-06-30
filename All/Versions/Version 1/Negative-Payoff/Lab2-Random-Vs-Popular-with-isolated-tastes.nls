@@ -14,11 +14,11 @@ to setup
 	let k 5
 	let m 3
 
-	create-documents 6 [documents-setup t-count [1]]
-	create-documents 6 [documents-setup t-count [0]]
+	create-documents 10 [documents-setup t-count [1]]
+	create-documents 2 [documents-setup t-count [0]]
 	
-  create-random-profiles 100 [profiles-setup k m t-count [1] green]
-  create-attack-profiles 20 [profiles-setup k m t-count [0] red]
+  create-stock-document-popularity-profiles 100 [profiles-setup k m 1 [1] green]
+  create-stock-viral-profiles 20 [profiles-setup k m 1 [0] red]
 
 	my-layout    
 end

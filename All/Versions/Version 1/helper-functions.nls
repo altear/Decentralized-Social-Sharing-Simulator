@@ -11,8 +11,11 @@ to profiles-setup [k m tag-count tag-list colour]
   set document? false
   set active? true
   set tags n-of tag-count tag-list
-  set color colour
+  set default-color colour
   set children []
+  set turn-payoff-list []
+  
+  if active? [set color default-color]
 end
 
 to documents-setup [tag-count tag-list]
