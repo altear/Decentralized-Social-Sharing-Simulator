@@ -104,6 +104,7 @@ to-report peer-distance
   let current-nodes turtle-set self
   let active-turtle self
   let next-nodes no-turtles
+  let past-nodes []
   let n 1
   
   repeat (count other turtles with [not document?])[
@@ -111,6 +112,8 @@ to-report peer-distance
     
     ask current-nodes [
       ;Set rank of documents
+      
+      
       ask (turtle-set [end2] of my-out-connect-links) with [document?][
       
         ask rank-link ([who] of active-turtle) ([who] of self) [
@@ -120,7 +123,9 @@ to-report peer-distance
       
       ;add peers to next iteration
       ask myself [
-        set next-nodes  other (turtle-set next-nodes (turtle-set [end2] of my-out-connect-links) with [not document?])
+        set next-nodes  filter [not member? ? past-nodes] [self] of (other (turtle-set next-nodes (turtle-set [end2] of my-out-connect-links) with [not document?])) 
+        set past-nodes sentence past-nodes next-nodes
+        
       ]
     ]
     
